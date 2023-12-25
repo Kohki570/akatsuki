@@ -14,6 +14,7 @@
     <script>
         let currentPlaying = '';
         let isPaused = false;
+        let randomFilePlayed = false;
 
         document.getElementById('file-upload').addEventListener('change', function() {
             let files = this.files;
@@ -25,7 +26,6 @@
                     let displayName = files[i].name.slice(4, -4); // Remove '100_' at start and '.wav' at end
                     fileListDiv.innerHTML += displayName + '<br>'; // Display modified file names
                     playFile(files[i]);
-                
                 }
             }
         });
@@ -36,20 +36,44 @@
                 document.getElementById('audio-player').pause();
                 isPaused = true;
             } else {
-                // Play a "228" file
+                // Play a "228" file or the next file after a random file has played
                 let files = document.getElementById('file-upload').files;
-                for (let i = 0; i < files.length; i++) {
-                    if (files[i].name.startsWith('228') && files[i].name.endsWith('.wav')) {
-                        playFile(files[i]);
-                        break;
+                if (!randomFilePlayed) {
+                    for (let i = 0; i < files.length; i++) {
+                        if (files[i].name.startsWith('228') && files[i].name.endsWith('.wav')) {
+                            playFile(files[i]);
+                            break;
+                        }
+                    }
+                } else {
+                    let nextFileNum = parseInt(currentPlaying.slice(0, 3)) + 128;
+                    let nextFileName = nextFileNum.toString().padStart(3, '0');
+                    for (let i = 0; i < files.length; i++) {
+                        if (files[i].name.startsWith(nextFileName)) {
+                            playFile(files[i]);
+                            break;
+                        }
                     }
                 }
             }
         });
 
         document.getElementById('audio-player').addEventListener('ended', function() {
-            currentPlaying = '';
-            isPaused = false;
+            if (currentPlaying.startsWith('228')) {
+                // Play a random file from 000 to 099
+                let files = document.getElementById('file-upload').files;
+                let randomFiles = Array.from(files).filter(file => file.name.match(/^0[0-9]{2}.*\.wav$/));
+                if (randomFiles.length > 0) {
+                    playFile(randomFiles[Math.floor(Math.random() * randomFiles.length)]);
+                    randomFilePlayed = true;
+                }
+            } else if (randomFilePlayed) {
+                // Reset after a random file plays
+                randomFilePlayed = false;
+            } else {
+                currentPlaying = '';
+                isPaused = false;
+            }
         });
 
         function playFile(file) {
