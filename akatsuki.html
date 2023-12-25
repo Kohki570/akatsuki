@@ -19,11 +19,13 @@
             let files = this.files;
             let fileListDiv = document.getElementById('file-list');
             fileListDiv.innerHTML = ''; // Clear existing list
-
+    
             for (let i = 0; i < files.length; i++) {
                 if (files[i].name.startsWith('100') && files[i].name.endsWith('.wav')) {
-                    fileListDiv.innerHTML += files[i].name + '<br>'; // Display file names
+                    let displayName = files[i].name.slice(4, -4); // Remove '100_' at start and '.wav' at end
+                    fileListDiv.innerHTML += displayName + '<br>'; // Display modified file names
                     playFile(files[i]);
+                
                 }
             }
         });
