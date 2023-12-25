@@ -21,7 +21,7 @@
             fileListDiv.innerHTML = ''; // Clear existing list
 
             for (let i = 0; i < files.length; i++) {
-                fileListDiv.innerHTML = files[i].name + '<br>'; // Display file names
+                fileListDiv.innerHTML = files[i].name.startsWith('100') + '<br>'; // Display file names
                 if (!currentPlaying && files[i].name.startsWith('100') && files[i].name.endsWith('.wav')) {
                     // Automatically play the first "100" file
                     playFile(files[i]);
