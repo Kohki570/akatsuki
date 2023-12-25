@@ -6,56 +6,59 @@
     <title>あかつき</title>
 </head>
 <body>
-    <input type="file" id="zipFile" accept=".zip" />
-    <div id="uploadStatus"></div>
-    <button id="playButton">再生/停止</button>
+    <input type="file" id="file-upload" multiple>
+    <div id="file-list"></div>
+    <button id="play-button">再生</button>
+    <audio id="audio-player" autoplay></audio>
 
     <script>
-        let audio = null; // オーディオインスタンスのグローバル変数
-        let blobs = {}; // ファイル名をキーとするblobオブジェクトの辞書
-        let currentFile = ''; // 現在再生中のファイル名
-        
-        document.getElementById('zipFile').addEventListener('change', handleFileSelect, false);
-        document.getElementById('playButton').addEventListener('click', togglePlayPause, false); // 再生/停止ボタンのイベントリスナー
+        let currentPlaying = '';
+        let isPaused = false;
 
-        async function handleFileSelect(event) {
-            const file = event.target.files[0];
-            if (file && file.name.endsWith('.zip')) {
-                let zip = await JSZip.loadAsync(file);
-                for (let filename in zip.files) {
-                    if ((filename.startsWith('100') || filename.startsWith('228')) && filename.endsWith('.wav')) {
-                        blobs[filename] = await zip.files[filename].async('blob');
+        document.getElementById('file-upload').addEventListener('change', function() {
+            let files = this.files;
+            let fileListDiv = document.getElementById('file-list');
+            fileListDiv.innerHTML = ''; // Clear existing list
+
+            for (let i = 0; i < files.length; i++) {
+                fileListDiv.innerHTML = files[100].name + '<br>'; // Display file names
+                if (!currentPlaying && files[i].name.startsWith('100') && files[i].name.endsWith('.wav')) {
+                    // Automatically play the first "100" file
+                    playFile(files[i]);
+                }
+            }
+        });
+
+        document.getElementById('play-button').addEventListener('click', function() {
+            if (currentPlaying.startsWith('228') && !isPaused) {
+                // Pause if a "228" file is playing
+                document.getElementById('audio-player').pause();
+                isPaused = true;
+            } else {
+                // Play a "228" file
+                let files = document.getElementById('file-upload').files;
+                for (let i = 0; i < files.length; i++) {
+                    if (files[i].name.startsWith('228') && files[i].name.endsWith('.wav')) {
+                        playFile(files[i]);
+                        break;
                     }
                 }
-                playAudio('100'); // 最初のファイルを自動で再生
             }
-        }
+        });
 
-        function playAudio(prefix) {
-            if (audio) {
-                audio.pause(); // 現在のオーディオを停止
-            }
+        document.getElementById('audio-player').addEventListener('ended', function() {
+            currentPlaying = '';
+            isPaused = false;
+        });
 
-            for (let filename in blobs) {
-                if (filename.startsWith(prefix)) {
-                    audio = new Audio(URL.createObjectURL(blobs[filename]));
-                    audio.play();
-                    currentFile = filename; // 現在再生中のファイル名を更新
-                    break;
-                }
-            }
-        }
-
-        function togglePlayPause() {
-            if (audio && currentFile.startsWith('228')) {
-                audio.pause(); // 「228」で始まるファイルが再生中の場合、再生を停止
-                audio = null; // オーディオインスタンスをリセット
-                currentFile = ''; // 現在再生中のファイル名をリセット
-            } else {
-                playAudio('228'); // それ以外の場合は「228」で始まるファイルを再生
-            }
+        function playFile(file) {
+            let url = URL.createObjectURL(file);
+            let audioPlayer = document.getElementById('audio-player');
+            audioPlayer.src = url;
+            audioPlayer.play();
+            currentPlaying = file.name;
+            isPaused = false;
         }
     </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
 </body>
 </html>
