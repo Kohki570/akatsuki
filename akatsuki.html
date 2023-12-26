@@ -12,77 +12,88 @@
     <audio id="audio-player" autoplay></audio>
 
     <script>
-        let currentPlaying = '';
-        let isPaused = false;
-        let randomFilePlayed = false;
+        let files;
+        let lastPlayedFileNumber = null;
+        var kaminokuisplaying = 0;
+        var onmusic = 0;
 
-        document.getElementById('file-upload').addEventListener('change', function() {
-            let files = this.files;
-            let fileListDiv = document.getElementById('file-list');
-            fileListDiv.innerHTML = ''; // Clear existing list
-    
+        document.getElementById('file-upload').addEventListener('change', function(e) {
+            files = e.target.files;
+            playFileStartingWith('100');
             for (let i = 0; i < files.length; i++) {
-                if (files[i].name.startsWith('100') && files[i].name.endsWith('.wav')) {
-                    let displayName = files[i].name.slice(4, -4); // Remove '100_' at start and '.wav' at end
-                    fileListDiv.innerHTML += displayName + '<br>'; // Display modified file names
-                    playFile(files[i]);
+                if (files[i].name.startsWith('100')) {
+                    fileToPlay = files[i];
+
+                    // ファイル名の最初の4文字と最後の4文字を除外して表示
+                    const displayName = files[i].name.substring(4, files[i].name.length - 4);
+                    document.getElementById('file-list').innerText = displayName;
+                    break;
                 }
             }
         });
-
+//ここから
         document.getElementById('play-button').addEventListener('click', function() {
-            if (currentPlaying.startsWith('228') && !isPaused) {
-                // Pause if a "228" file is playing
-                document.getElementById('audio-player').pause();
-                isPaused = true;
-            } else {
-                // Play a "228" file or the next file after a random file has played
-                let files = document.getElementById('file-upload').files;
-                if (!randomFilePlayed) {
-                    for (let i = 0; i < files.length; i++) {
-                        if (files[i].name.startsWith('228') && files[i].name.endsWith('.wav')) {
-                            playFile(files[i]);
-                            break;
-                        }
-                    }
-                } else {
-                    let nextFileNum = parseInt(currentPlaying.slice(0, 3)) + 128;
-                    let nextFileName = nextFileNum.toString().padStart(3, '0');
-                    for (let i = 0; i < files.length; i++) {
-                        if (files[i].name.startsWith(nextFileName)) {
-                            playFile(files[i]);
-                            break;
-                        }
-                    }
-                }
+            if(lastPlayedFileNumber === '100'){
+                playFileStartingWith('228');
+                
             }
+            else if(kaminokuisplaying==0 && onmusic==1){
+                document.getElementById('audio-player').pause();
+                document.getElementById('audio-player').currentTime = 0;
+                onmusic = 0;
+                
+            }
+            else if (kaminokuisplaying == 0 && onmusic==0){
+                document.getElementById('audio-player').play();
+                onmusic=1;
+            }
+            else if (kaminokuisplaying == 1 && onmusic==1){
+                document.getElementById('audio-player').pause();
+                onmusic = 0;
+            }
+
+
+            else if (kaminokuisplaying == 1 && onmusic == 0) {
+                let nextFileNumber = parseInt(lastPlayedFileNumber, 10) + 128;
+                playFileStartingWith(nextFileNumber.toString().padStart(3, '0'));
+                kaminokuisplaying=0;
+                onmusic=1;
+            } 
+
         });
 
         document.getElementById('audio-player').addEventListener('ended', function() {
-            if (currentPlaying.startsWith('228')) {
-                // Play a random file from 000 to 099
-                let files = document.getElementById('file-upload').files;
-                let randomFiles = Array.from(files).filter(file => file.name.match(/^0[0-9]{2}.*\.wav$/));
-                if (randomFiles.length > 0) {
-                    playFile(randomFiles[Math.floor(Math.random() * randomFiles.length)]);
-                    randomFilePlayed = true;
-                }
-            } else if (randomFilePlayed) {
-                // Reset after a random file plays
-                randomFilePlayed = false;
-            } else {
-                currentPlaying = '';
-                isPaused = false;
+            kaminokuisplaying = 1;
+            onmusic = 1;
+            if (lastPlayedFileNumber === '228') {
+                setTimeout(function() {
+                    let kaminoku = "000";
+                    playFileStartingWith(kaminoku);
+                }, 1000);
+            } else if (lastPlayedFileNumber === '128' || lastPlayedFileNumber === '256') {
+                setTimeout(function() {
+                    let kaminoku ="001";
+                    playFileStartingWith(kaminoku);
+                }, 1000);
+                
             }
         });
 
-        function playFile(file) {
-            let url = URL.createObjectURL(file);
-            let audioPlayer = document.getElementById('audio-player');
-            audioPlayer.src = url;
-            audioPlayer.play();
-            currentPlaying = file.name;
-            isPaused = false;
+//ここまで
+
+        function playFileStartingWith(prefix) {
+            if (files) {
+                for (let i = 0; i < files.length; i++) {
+                    if (files[i].name.startsWith(prefix)) {
+                        lastPlayedFileNumber = prefix;
+                        const audioPlayer = document.getElementById('audio-player');
+                        audioPlayer.src = URL.createObjectURL(files[i]);
+                        audioPlayer.load();
+                        audioPlayer.play();
+                        break;
+                    }
+                }
+            }
         }
     </script>
 </body>
