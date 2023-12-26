@@ -6,6 +6,8 @@
     <title>あかつき</title>
 </head>
 <body>
+        <!-- メインコンテンツ -->
+    </div>
     <div class="box"></div>
     <input type="file" id="file-upload" class="file" multiple>
     <div id="file-list" class="dokusyu">読手</div>
@@ -26,6 +28,10 @@
             -webkit-user-drag: none;
             -khtml-user-drag: none;
           }
+
+        
+
+        
         .box {
             margin: auto;
             width: 358px;
@@ -159,13 +165,20 @@
           
     </style>
     <script>
+
         let files;
         let lastPlayedFileNumber = null;
         var kaminokuisplaying = 0;
         var onmusic = 0;
 
+        document.getElementById('file-upload').addEventListener('click', function() {
+            document.getElementById('audio-player').load();
+            document.getElementById('audio-player').pause();
+        });
         document.getElementById('file-upload').addEventListener('change', function(e) {
+
             files = e.target.files;
+
             playFileStartingWith('100');
             for (let i = 0; i < files.length; i++) {
                 if (files[i].name.startsWith('100')) {
