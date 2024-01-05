@@ -177,7 +177,7 @@
                 color: #D7EAC6;
                 display: inline-block;
                 border-radius: 130px;
-                transition: transform .2s;
+                transition: transform .1s;
               }
             .push {
                 background-color: white;
@@ -195,12 +195,15 @@
               
             
             }
+
+
+
           @media (min-width: 376px) {
              /*iphone8横 */
             .box {
               margin: auto;
               width: 650px;
-              height: 310px;
+              height: 340px;
             }
             .file{
                 text-align: center;
@@ -515,7 +518,7 @@
 
        
 
-        document.getElementById('play-button').addEventListener('touchstart', function() {
+        document.getElementById('play-button').addEventListener('touchend', function() {
           if(lastPlayedFileNumber === '100'){
               playFileStartingWith('228');
               onmusic=1;
