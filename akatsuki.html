@@ -18,17 +18,21 @@
         <span class="btn push"id="play-button"></span>
       </div>
     <audio id="audio-player" autoplay></audio>
-    <style>
-        html {
-            touch-action: manipulation;
-            user-select: none;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -khtml-user-select: none;
-            -webkit-user-drag: none;
-            -khtml-user-drag: none;
-          }
 
+
+<style>
+  html {
+      touch-action: manipulation;
+      user-select: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -khtml-user-select: none;
+      -webkit-user-drag: none;
+      -khtml-user-drag: none;
+    }
+    html,body{
+      overflow: hidden
+    }
         
         .box {
             margin: auto;
@@ -471,15 +475,15 @@
                 }
     </style>
     <script>
-      //スクロール禁止
-      function disableScroll(event) {
-        event.preventDefault();
-      }
-      
 
-      
-      // イベントと関数を紐付け
-      document.addEventListener('touchmove', disableScroll, { passive: false });
+      document.addEventListener('dblclick', function(e){
+          e.preventDefault();
+      });
+        	
+      window.addEventListener('touchmove', function(event) {
+        event.preventDefault();
+      });
+
         let files;
         let lastPlayedFileNumber = null;
         var kaminokuisplaying = 0;
@@ -625,7 +629,18 @@
                 }
             }
         }
+        // ページが読み込まれた後にイベントリスナーを設定
+        window.onload = function() {
+          // beforeunloadイベントを使用して、ページがアンロードされる前に警告を表示
+          window.addEventListener("beforeunload", function (e) {
+              var confirmationMessage = "このページを離れますか？";
 
+              // ほとんどのブラウザは、カスタムメッセージを無視し、標準の警告メッセージを表示します
+              (e || window.event).returnValue = confirmationMessage; 
+              return confirmationMessage;
+          });
+      };
+      
         
     </script>
 
