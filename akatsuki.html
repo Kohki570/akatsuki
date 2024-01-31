@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="icon" href="akatsuki.png" sizes="48x48">
+  <link rel="apple-touch-icon" sizes="152x152" href="/akatsuki.png">
+  <link rel="shortcut icon" href="akatsuki.png" type="image/x-icon">
+<link rel="apple-touch-icon" href="akatsuki.png" sizes="180x180">
+<link rel="icon" type="image/png" href="akatsuki.png" sizes="192x192">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>あかつき</title>
@@ -649,13 +655,15 @@
             document.getElementById('audio-player').pause();
         });
         document.getElementById('file-upload').addEventListener('change', function(e) {
-
+          var s = 0;
+          document.getElementById('s').innerText = s +"首目";
             files = e.target.files;
 
             playFileStartingWith('100');
             for (let i = 0; i < files.length; i++) {
                 if (files[i].name.startsWith('100')) {
                     fileToPlay = files[i];
+                    
 
                     // ファイル名の最初の4文字と最後の4文字を除外して表示
                     const displayName = files[i].name.substring(4, files[i].name.length - 4);
