@@ -695,7 +695,7 @@
     }
   </style>
   <script>
-    
+
 
     document.addEventListener('dblclick', function (e) {
       e.preventDefault();
@@ -735,23 +735,9 @@
 
 
 
+    let uniqueRandoms = generateUniqueRandoms(numElements, rangeStart, rangeEnd);
 
-
-
-
-
-
-
-
-    document.getElementById('file-upload').addEventListener('change', function (e) {
-      
-      s = 0;
-      document.getElementById('s').innerText = s + "首目";
-      files = e.target.files;
-
-      let uniqueRandoms = generateUniqueRandoms(numElements, rangeStart, rangeEnd);
-      
-      var kaminoku = ["000", "001", "002", "003", "004", "005", "006", "007", "008", "009",
+    var kaminoku = ["000", "001", "002", "003", "004", "005", "006", "007", "008", "009",
       "010", "011", "012", "013", "014", "015", "016", "017", "018", "019",
       "020", "021", "022", "023", "024", "025", "026", "027", "028", "029",
       "030", "031", "032", "033", "034", "035", "036", "037", "038", "039",
@@ -762,8 +748,22 @@
       "080", "081", "082", "083", "084", "085", "086", "087", "088", "089",
       "090", "091", "092", "093", "094", "095", "096", "097", "098", "099"];
 
-      var s = 0; // 呼んだ回数
-      var f = 0; //終了カウント
+    var s = 0; // 呼んだ回数
+    var f = 0; //終了カウント
+
+
+
+
+
+
+
+    document.getElementById('file-upload').addEventListener('change', function (e) {
+
+      s = 0;
+      document.getElementById('s').innerText = s + "首目";
+      files = e.target.files;
+
+
 
 
 
@@ -832,7 +832,7 @@
 
 
     document.getElementById('audio-player').addEventListener('ended', function () {
-      
+
       onmusic = 0;
 
 
