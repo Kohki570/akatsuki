@@ -695,6 +695,7 @@
     }
   </style>
   <script>
+    
 
     document.addEventListener('dblclick', function (e) {
       e.preventDefault();
@@ -751,7 +752,7 @@
 
 
     document.getElementById('file-upload').addEventListener('change', function (e) {
-      var kami = kaminoku[uniqueRandoms[s]];
+      
       s = 0;
       document.getElementById('s').innerText = s + "首目";
       files = e.target.files;
@@ -818,7 +819,7 @@
 
 
     document.getElementById('audio-player').addEventListener('ended', function () {
-
+      var kami = kaminoku[uniqueRandoms[s]];
       onmusic = 0;
 
 
