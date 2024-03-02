@@ -712,6 +712,9 @@
     document.getElementById('file-upload').addEventListener('click', function () {
       document.getElementById('audio-player').load();
       document.getElementById('audio-player').pause();
+
+
+      
     });
     document.getElementById('file-upload').addEventListener('change', function (e) {
       s = 0;
@@ -805,11 +808,11 @@
 
     var s = 0; // 呼んだ回数
     var f = 0; //終了カウント
-
+    var kami = kaminoku[uniqueRandoms[s]];
 
     document.getElementById('audio-player').addEventListener('ended', function () {
       onmusic = 0;
-      var kami = kaminoku[uniqueRandoms[s]];
+      
 
       if (lastPlayedFileNumber === '228') {
 
