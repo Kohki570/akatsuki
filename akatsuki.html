@@ -704,18 +704,17 @@
       event.preventDefault();
     });
 
+
+
+
+
+
+
     let files;
     let lastPlayedFileNumber = null;
     var kaminokuisplaying = 0;
     var onmusic = 0;
 
-    document.getElementById('file-upload').addEventListener('click', function () {
-      document.getElementById('audio-player').load();
-      document.getElementById('audio-player').pause();
-
-
-      
-    });
 
     function generateUniqueRandoms(numElements, rangeStart, rangeEnd) {
       let numbers = new Set();
@@ -748,6 +747,20 @@
     
     var s = 0; // 呼んだ回数
     var f = 0; //終了カウント
+
+
+
+
+
+    document.getElementById('file-upload').addEventListener('click', function () {
+      document.getElementById('audio-player').load();
+      document.getElementById('audio-player').pause();
+      var kami = kaminoku[uniqueRandoms[s]];
+
+      
+    });
+
+
 
 
     document.getElementById('file-upload').addEventListener('change', function (e) {
@@ -815,7 +828,7 @@
     
 
     document.getElementById('audio-player').addEventListener('ended', function () {
-      var kami = kaminoku[uniqueRandoms[s]];
+      
       onmusic = 0;
       
 
