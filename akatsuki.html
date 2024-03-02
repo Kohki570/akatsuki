@@ -718,20 +718,7 @@
 
     });
 
-    function generateUniqueRandoms(numElements, rangeStart, rangeEnd) {
-      let numbers = new Set();
 
-      while (numbers.size < numElements) {
-        let randomNumber = Math.floor(Math.random() * (rangeEnd - rangeStart + 1)) + rangeStart;
-        numbers.add(randomNumber);
-      }
-
-      return Array.from(numbers);
-    }
-
-    let numElements = 100;  // 生成するランダム数の個数
-    let rangeStart = 0;    // 範囲の開始点（含む）
-    let rangeEnd = 99;    // 範囲の終了点（含む）
 
 
 
@@ -742,7 +729,20 @@
       document.getElementById('s').innerText = s + "首目";
       files = e.target.files;
 
-
+      function generateUniqueRandoms(numElements, rangeStart, rangeEnd) {
+        let numbers = new Set();
+  
+        while (numbers.size < numElements) {
+          let randomNumber = Math.floor(Math.random() * (rangeEnd - rangeStart + 1)) + rangeStart;
+          numbers.add(randomNumber);
+        }
+  
+        return Array.from(numbers);
+      }
+  
+      let numElements = 100;  // 生成するランダム数の個数
+      let rangeStart = 0;    // 範囲の開始点（含む）
+      let rangeEnd = 99;    // 範囲の終了点（含む）
 
 
       let uniqueRandoms = generateUniqueRandoms(numElements, rangeStart, rangeEnd);
