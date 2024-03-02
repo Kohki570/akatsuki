@@ -757,6 +757,8 @@
       document.getElementById('s').innerText = s + "首目";
       files = e.target.files;
 
+      var kami = kaminoku[uniqueRandoms[s]];
+
       playFileStartingWith('100');
       for (let i = 0; i < files.length; i++) {
         if (files[i].name.startsWith('100')) {
@@ -816,7 +818,7 @@
     });
 
 
-var kami = kaminoku[uniqueRandoms[s]];
+
 
     document.getElementById('audio-player').addEventListener('ended', function () {
       
